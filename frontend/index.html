@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SemXMLDiff — XML Semantic Compare &amp; Merge</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="topbar">
+  <span class="brand"><span class="logo">SemXMLDiff</span></span>
+  <span class="tagline">XML semantic compare &amp; merge &middot; 100% local, nothing leaves your machine</span>
+</header>
+
+<main>
+  <section id="step-upload" class="step">
+    <h1>Compare two XML files by content, not order</h1>
+    <p class="lead">Elements are matched semantically &mdash; sibling order, attribute order and whitespace are ignored. Review the differences, choose what to keep from each side, and produce a merged XML with source tracking.</p>
+
+    <div class="upload-row">
+      <div class="dropzone" id="dz-a" data-side="a">
+        <input type="file" id="file-a" accept=".xml,text/xml,application/xml" hidden>
+        <div class="dz-label">File A</div>
+        <div class="dz-hint">Drop an XML file here or click to browse</div>
+        <div class="dz-file" id="file-info-a" hidden></div>
+      </div>
+      <div class="dropzone" id="dz-b" data-side="b">
+        <input type="file" id="file-b" accept=".xml,text/xml,application/xml" hidden>
+        <div class="dz-label">File B</div>
+        <div class="dz-hint">Drop an XML file here or click to browse</div>
+        <div class="dz-file" id="file-info-b" hidden></div>
+      </div>
+    </div>
+
+    <details class="options">
+      <summary>Comparison options</summary>
+      <div class="options-grid">
+        <label class="opt"><input type="checkbox" id="opt-ws" checked> Normalize whitespace (trim &amp; collapse)</label>
+        <label class="opt">Namespace handling
+          <select id="opt-ns">
+            <option value="uri" selected>Compare by namespace URI (ignore prefix)</option>
+            <option value="prefix">Compare by prefix</option>
+            <option value="local">Ignore namespaces (local names only)</option>
+          </select>
+        </label>
+        <label class="opt">Ignored attributes (comma separated)
+          <input type="text" id="opt-ignore-attrs" placeholder="e.g. timestamp, generatedId">
+        </label>
+        <label class="opt">Ignore XPath patterns (comma separated)
+          <input type="text" id="opt-ignore-xpaths" placeholder="e.g. /config/generated, //logs">
+        </label>
+      </div>
+    </details>
+
+    <div class="actions">
+      <button id="btn-compare" class="btn primary" disabled>Compare</button>
+      <span id="compare-status" class="status"></span>
+    </div>
+    <div id="upload-error" class="error-banner" hidden></div>
+  </section>
+
+  <section id="step-diff" class="step" hidden>
+    <div class="step-head">
+      <h1>Review differences</h1>
+      <button class="btn ghost" id="btn-back-upload">&larr; Back</button>
+    </div>
+
+    <div class="chips" id="summary-chips"></div>
+    <div id="identical-note" class="note" hidden>The two files are identical according to the current comparison options.</div>
+
+    <div class="toolbar">
+      <label class="opt inline"><input type="checkbox" id="opt-only-diffs"> Only show differences</label>
+      <label class="opt inline">Source marking
+        <select id="opt-marking">
+          <option value="none" selected>Clean XML + merge report</option>
+          <option value="attribute">Attribute (data-merge-source)</option>
+          <option value="comment">XML comments</option>
+        </select>
+      </label>
+      <span class="spacer"></span>
+      <div class="bulk">
+        <button class="btn small" id="bulk-a" title="Take the A version for every difference">Prefer A everywhere</button>
+        <button class="btn small" id="bulk-b" title="Take the B version for every difference">Prefer B everywhere</button>
+        <button class="btn small" id="bulk-both" title="Include every difference from its own side (default)">Include all</button>
+        <button class="btn small" id="bulk-skip" title="Skip every difference">Skip all</button>
+      </div>
+    </div>
+
+    <div class="split">
+      <div class="pane tree-pane">
+        <div id="diff-tree" class="diff-tree"></div>
+      </div>
+      <div class="pane preview-pane">
+        <div class="pane-title">Live preview &mdash; merged XML</div>
+        <div class="preview-stats" id="preview-stats"></div>
+        <pre id="preview-xml" class="code"></pre>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button id="btn-merge" class="btn primary">Merge</button>
+    </div>
+    <div id="diff-error" class="error-banner" hidden></div>
+  </section>
+
+  <section id="step-result" class="step" hidden>
+    <div class="step-head">
+      <h1>Merged result</h1>
+      <button class="btn ghost" id="btn-restart">Start over</button>
+    </div>
+
+    <div class="chips" id="result-chips"></div>
+    <div class="downloads" id="download-links"></div>
+    <div class="pane">
+      <div class="pane-title">Merged XML</div>
+      <pre id="result-xml" class="code"></pre>
+    </div>
+  </section>
+</main>
+
+<footer>SemXMLDiff &middot; all processing stays on your machine</footer>
+<div id="toast-container"></div>
+<script src="js/app.js"></script>
+</body>
+</html>
