@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration version="1.4.2" environment="production">
+  <appSettings>
+    <setting key="app.name" value="Acme Service" />
+    <setting key="app.timeout" value="30" />
+    <setting key="app.retries" value="3" />
+    <setting key="app.feature-flags" value="alpha,beta" />
+    <setting key="app.locale" value="en-US" />
+    <setting key="app.logLevel" value="info" />
+  </appSettings>
+  <database>
+    <connection name="primary">
+      <host>db.internal.local</host>
+      <port>5432</port>
+      <username>svc_app</username>
+      <password>s3cret</password>
+      <pool>10</pool>
+    </connection>
+    <connection name="replica">
+      <host>replica.internal.local</host>
+      <port>5432</port>
+      <username>svc_readonly</username>
+      <password>r3ad0nly</password>
+      <pool>4</pool>
+    </connection>
+  </database>
+  <services>
+    <service name="email" enabled="true">
+      <endpoint>https://mail.internal.local/api</endpoint>
+      <timeout>10</timeout>
+    </service>
+    <service name="payments" enabled="false">
+      <endpoint>https://pay.internal.local/api</endpoint>
+      <timeout>15</timeout>
+    </service>
+    <service name="search" enabled="true">
+      <endpoint>https://search.internal.local/api</endpoint>
+      <timeout>5</timeout>
+    </service>
+  </services>
+  <logging>
+    <targets>
+      <target type="console" level="info" />
+      <target type="file" level="debug" path="/var/log/app.log" />
+    </targets>
+  </logging>
+</configuration>

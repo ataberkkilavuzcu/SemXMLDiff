@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration environment="production" version="1.5.0">
+  <logging>
+    <targets>
+      <target level="debug" type="file" path="/var/log/app.log" />
+      <target level="info" type="console" />
+    </targets>
+  </logging>
+  <appSettings>
+    <setting key="app.timeout" value="45" />
+    <setting key="app.name" value="Acme Service" />
+    <setting key="app.locale" value="en-US" />
+    <setting key="app.retries" value="3" />
+    <setting key="app.logLevel" value="info" />
+    <setting key="app.enableCache" value="true" />
+  </appSettings>
+  <database>
+    <connection name="primary">
+      <host>db.internal.local</host>
+      <port>5432</port>
+      <username>svc_app</username>
+      <password>s3cret</password>
+      <pool>10</pool>
+    </connection>
+    <connection name="replica">
+      <host>replica.internal.local</host>
+      <port>5432</port>
+      <username>svc_readonly</username>
+      <password>r3ad0nly</password>
+      <pool>8</pool>
+    </connection>
+    <connection name="analytics">
+      <host>analytics.internal.local</host>
+      <port>5432</port>
+      <username>svc_analytics</username>
+      <password>4n4lyt1cs</password>
+      <pool>2</pool>
+    </connection>
+  </database>
+  <services>
+    <service enabled="false" name="payments">
+      <endpoint>https://pay.internal.local/api</endpoint>
+      <timeout>15</timeout>
+    </service>
+    <service enabled="true" name="email">
+      <endpoint>https://mail.internal.local/api</endpoint>
+      <timeout>10</timeout>
+    </service>
+  </services>
+</configuration>
