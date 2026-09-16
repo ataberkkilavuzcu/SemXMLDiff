@@ -139,25 +139,6 @@ SemXMLDiff/
 │   ├── index.html
 │   ├── css/style.css
 │   └── js/app.js
-├── tests/             # pytest suite (engine + API)
 ├── requirements.txt
-├── requirements-dev.txt
 ├── run.sh / run.bat
-└── docs/PRD.md
 ```
-
-## Development
-
-```bash
-.venv/bin/pip install -r requirements-dev.txt
-.venv/bin/python -m pytest tests
-```
-
-## Known limitations (MVP)
-
-- No key/id-based "modified element" matching (see the PRD, section 6.4).
-- Two-file comparison only; no project history or saved sessions.
-- Elements taken from B are appended at the end of their parent (order is
-  insignificant by design).
-- Very large files: the interactive tree is capped; use "Only show differences"
-  for a flat list of every difference.
